@@ -1,14 +1,28 @@
 package com.mohammadreza_mirali.n26.service.transactionStatistics;
 
+import com.mohammadreza_mirali.n26.service.transactionStatistics.dto.StatisticDto;
 import com.mohammadreza_mirali.n26.service.transactionStatistics.dto.TransactionDto;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
-
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({ TransactionStatisticsManager.class })
 public class TransactionStatisticsManagerTest {
     TransactionStatisticsManager transactionStatisticsManager = new TransactionStatisticsManager();
+
+    @Mock
+    List<TransactionDto> transactionDtoListMock;
+
+
     @Test
     public void transactions() throws Exception {
         TransactionDto transactionDto = new TransactionDto();
@@ -18,12 +32,33 @@ public class TransactionStatisticsManagerTest {
         assertEquals(transactionStatisticsManager.transactions(transactionDto),"201");
         transactionDto.setTimeStamp(Instant.now().toEpochMilli()-60001);
         assertEquals(transactionStatisticsManager.transactions(transactionDto),"204");
-//        transactionStatisticsManager.statistics();
+
     }
 
     @Test
     public void statistics() throws Exception {
-        transactionStatisticsManager.statistics();
+        transactionDtoListMock= new ArrayList<>();
+        TransactionDto transactionDto1 = new TransactionDto();
+        transactionDto1.setTimeStamp(Instant.now().toEpochMilli() - 60001);
+        transactionDto1.setAmount((double) 1000);
+        TransactionDto transactionDto2 = new TransactionDto();
+        transactionDto2.setTimeStamp(Instant.now().toEpochMilli() - 6);
+        transactionDto2.setAmount((double) 1200);
+        TransactionDto transactionDto3 = new TransactionDto();
+        transactionDto3.setTimeStamp(Instant.now().toEpochMilli() - 20);
+        transactionDto3.setAmount((double) 1100);
+        transactionDtoListMock.add(transactionDto1);
+        transactionDtoListMock.add(transactionDto2);
+        transactionDtoListMock.add(transactionDto3);
+        PowerMockito.mockStatic(List.class);
+        PowerMockito.whenNew(List.class).withNoArguments().thenReturn(transactionDtoListMock);
+        StatisticDto statisticDto = transactionStatisticsManager.statistics();
+        assertEquals(statisticDto.getAvg(),Double.valueOf(1150));
+        assertEquals(statisticDto.getCount(),Double.valueOf(2));
+        assertEquals(statisticDto.getMax(),Double.valueOf(1200));
+        assertEquals(statisticDto.getMin(),Double.valueOf(1100));
+        assertEquals(statisticDto.getMax(),Double.valueOf(1200));
+        assertEquals(statisticDto.getSum(),Double.valueOf(2300));
     }
 
 }

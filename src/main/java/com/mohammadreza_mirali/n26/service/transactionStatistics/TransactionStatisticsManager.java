@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 @Named("TransactionStatisticsManager")
 public class TransactionStatisticsManager {
 
-
+    private static final int validityTime= 60000;
     private List<TransactionDto> transactionDtoList = new ArrayList<>();
 
     public synchronized String transactions(TransactionDto transactionDto)
     {
 
-        if(transactionDto.getTimeStamp() >= Instant.now().toEpochMilli() - 6000000)
+        if(transactionDto.getTimeStamp() >= Instant.now().toEpochMilli() - validityTime)
         {
             transactionDtoList.add(transactionDto);
             return "201";
@@ -32,7 +32,7 @@ public class TransactionStatisticsManager {
         Comparator<TransactionDto> comparator = Comparator.comparing(TransactionDto::getAmount);
         if(transactionDtoList.size() > 0) {
             List<TransactionDto> transactionDtoFilteredList = transactionDtoList.parallelStream().
-                    filter(p -> p.getTimeStamp() > Instant.now().toEpochMilli() - 6000000).collect(Collectors.toList());
+                    filter(p -> p.getTimeStamp() > Instant.now().toEpochMilli() - validityTime).collect(Collectors.toList());
             if(transactionDtoFilteredList.size()==0)
                 return statisticDto;
             statisticDto.setMax(transactionDtoFilteredList.stream().max(comparator).get().getAmount());
