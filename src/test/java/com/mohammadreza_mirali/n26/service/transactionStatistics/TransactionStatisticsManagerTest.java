@@ -3,17 +3,22 @@ package com.mohammadreza_mirali.n26.service.transactionStatistics;
 import com.mohammadreza_mirali.n26.service.transactionStatistics.dto.StatisticDto;
 import com.mohammadreza_mirali.n26.service.transactionStatistics.dto.TransactionDto;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
+
+@RunWith(SpringRunner.class)
 public class TransactionStatisticsManagerTest {
     TransactionStatisticsManager transactionStatisticsManager = new TransactionStatisticsManager();
 
-    @Mock
+
     List<TransactionDto> transactionDtoListMock;
 
 
@@ -45,6 +50,7 @@ public class TransactionStatisticsManagerTest {
         transactionDtoListMock.add(transactionDto2);
         transactionDtoListMock.add(transactionDto3);
         transactionStatisticsManager.setTransactionDtoList(transactionDtoListMock);
+        transactionStatisticsManager.gatherStatistics();
         StatisticDto statisticDto = transactionStatisticsManager.statistics();
         assertEquals(statisticDto.getAvg(),Double.valueOf(1150));
         assertEquals(statisticDto.getCount(),Long.valueOf(2));

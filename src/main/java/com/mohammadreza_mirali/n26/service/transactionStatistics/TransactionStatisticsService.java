@@ -8,12 +8,20 @@ import javax.inject.Named;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+/**
+ * this class is the Service layer of our application which call our logic from manager class
+ */
 @Named("TransactionStatisticsService")
 @Path("/")
 public class TransactionStatisticsService {
     @Inject
     TransactionStatisticsManager transactionStatisticsManager;
 
+    /**
+     *
+     * @param transactionDto is input of each transaction, it is JSON input
+     * @return the result from logic layer(the manager)
+     */
     @POST
     @Path("/transactions")
     @Produces(MediaType.APPLICATION_JSON)
@@ -24,7 +32,10 @@ public class TransactionStatisticsService {
     }
 
 
-
+    /**
+     *
+     * @return statistics from logic layer
+     */
     @GET
     @Path("/statistics")
     @Produces(MediaType.APPLICATION_JSON)

@@ -5,9 +5,10 @@ import com.mohammadreza_mirali.n26.service.transactionStatistics.TransactionStat
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.Instant;
-
+@EnableScheduling
 @SpringBootApplication
 public class N26Application extends ResourceConfig{
 
