@@ -16,7 +16,7 @@ public class TransactionStatisticsManager {
     public synchronized String transactions(TransactionDto transactionDto)
     {
 
-        if(transactionDto.getTimeStamp() >= Instant.now().toEpochMilli() - validityTime)
+        if(transactionDto.getTimestamp() >= Instant.now().toEpochMilli() - validityTime)
         {
             transactionDtoList.add(transactionDto);
             return "201";
@@ -32,7 +32,7 @@ public class TransactionStatisticsManager {
         Comparator<TransactionDto> comparator = Comparator.comparing(TransactionDto::getAmount);
         if(transactionDtoList.size() > 0) {
             List<TransactionDto> transactionDtoFilteredList = transactionDtoList.parallelStream().
-                    filter(p -> p.getTimeStamp() > Instant.now().toEpochMilli() - validityTime).collect(Collectors.toList());
+                    filter(p -> p.getTimestamp() > Instant.now().toEpochMilli() - validityTime).collect(Collectors.toList());
             if(transactionDtoFilteredList.size()==0)
                 return statisticDto;
             statisticDto.setMax(transactionDtoFilteredList.stream().max(comparator).get().getAmount());
@@ -45,6 +45,11 @@ public class TransactionStatisticsManager {
         return statisticDto;
     }
 
+    public List<TransactionDto> getTransactionDtoList() {
+        return transactionDtoList;
+    }
 
-
+    public void setTransactionDtoList(List<TransactionDto> transactionDtoList) {
+        this.transactionDtoList = transactionDtoList;
+    }
 }

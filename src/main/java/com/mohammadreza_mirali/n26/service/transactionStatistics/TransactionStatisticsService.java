@@ -9,7 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Named("TransactionStatisticsService")
-@Path("/TransactionStatisticsManager")
+@Path("/")
 public class TransactionStatisticsService {
     @Inject
     TransactionStatisticsManager transactionStatisticsManager;

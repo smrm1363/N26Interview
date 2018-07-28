@@ -7,12 +7,8 @@ import java.util.UUID;
 public class TransactionDto implements Serializable
 {
     private Double amount;
-    private Long timeStamp;
+    private Long timestamp;
 
-//    public TransactionDto(Double amount, Long timeStamp) {
-//        this.amount = amount;
-//        this.timeStamp = timeStamp;
-//    }
 
     public Double getAmount() {
         return amount;
@@ -22,12 +18,12 @@ public class TransactionDto implements Serializable
         this.amount = amount;
     }
 
-    public Long getTimeStamp() {
-        return timeStamp;
+    public Long getTimestamp() {
+        return timestamp;
     }
 
-    public void setTimeStamp(Long timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
 }
